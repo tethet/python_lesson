@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sqlite3
 import datetime
 
@@ -37,6 +38,56 @@ def view_books():
             print('登録日: ', book[4])
             print('読了状況: ', book[5])
             print('\n')
+
+
+def search_book():
+    search_title = input('検索するタイトルを入力してください: ')
+    c.execute('''SELECT * FROM books WHERE title LIKE ?''', ('%'+search_title+'%',))
+    result = c.fetchall()
+    if not result:
+        print('該当する書籍はありません。')
+    else:
+        for book in result:
+            print('ID: ', book[0])
+            print('タイトル: ', book[1])
+            print('著者: ', book[2])
+            print('出版日: ', book[3])
+            print('登録日: ', book[4])
+            print('読了状況: ', book[5])
+            print('\n')
+    conn.commit()
+
+def mark_as_read():
+    book_id = input('読了済みにする本のIDを入力してください: ')
+    c.execute('''UPDATE books SET read = 1 WHERE id = ?''', (book_id,))
+    conn.commit()
+    print('読了済みにしました。')
+
+def delete_book():
+    book_id = input('削除する本のIDを入力してください: ')
+    c.execute('''SELECT * FROM books WHERE id = ?''', (book_id,))
+    result = c.fetchone()
+    if not result:
+        print('該当する書籍はありません。')
+    else:
+        print('以下の本を削除します。')
+        print('ID: ', result[0])
+        print('タイトル: ', result[1])
+        print('著者: ', result[2])
+        print('出版日: ', result[3])
+        print('登録日: ', result[4])
+        print('読了状況: ', result[5])
+        print('\n')
+        confirm = input('本当に削除しますか？(y/n): ')
+        if confirm.lower() == 'y':
+            c.execute('''DELETE FROM books WHERE id = ?''', (book_id,))
+            conn.commit()
+            print('本を削除しました。')
+        else:
+            print('削除を中止しました。')
+
+
+
 
 while True:
     print('1. 本を追加する')
