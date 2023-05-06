@@ -42,4 +42,11 @@ def view_tasks():
         print('\n')
 
 def edit_task():
-    
+    task_id = input('編集するタスクのIDを入力してください: ')
+
+    c.execute('SELECT * FROM tasks WHERE id = ?', (task_id,))
+    task = c.fetchone()
+
+    if not task:
+       print('指定したIDのタスクが見つかりませんでした')
+       return
