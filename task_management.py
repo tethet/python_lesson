@@ -50,3 +50,13 @@ def edit_task():
     if not task:
        print('指定したIDのタスクが見つかりませんでした')
        return
+    
+    new_task_name = input('新しいタスクのタイトルを入力してください（現在: {}）: '.format(task[1]))
+    new_task_description = input('新しいタスクの内容を入力してください（現在: {}）: '.format(task[2]))
+    new_task_time = input('新しいタスクを行う日時を入力してください（現在: {}）: '.format(task[4]))
+
+    c.execute('''UPDATE tasks SET task_name = ?, task_description = ?, task_time = ? WHERE id = ?''', 
+              (new_task_name, new_task_description, new_task_time, task_id))
+    conn.commit()
+    
+    print('タスクを更新しました')
