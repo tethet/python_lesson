@@ -41,11 +41,29 @@ def view_tasks():
         print('通知の送信状況: ', task[5])
         print('\n')
 
+
+def show_task():
+    task_id = input('詳細表示するタスクのIDを入力してください: ')
+    c.execute('SELECT * FROM tasks WHERE id = ?', (task_id,))
+    task = c.fetchone()
+
+     if not task:
+        print('指定したタスクのIDが見つかりませんでした。')
+    else:
+        print('ID: ', task[0])
+        print('タスク名: ', task[1])
+        print('タスクの内容: ', task[2])
+        print('タスクを行う日時: ', task[3])
+        print('通知の送信時間: ', task[4])
+        print('通知の送信状況: ', task[5])
+        print('\n')
+
 def edit_task():
     task_id = input('編集するタスクのIDを入力してください: ')
 
     c.execute('SELECT * FROM tasks WHERE id = ?', (task_id,))
     task = c.fetchone()
+
 
     if not task:
        print('指定したIDのタスクが見つかりませんでした')
